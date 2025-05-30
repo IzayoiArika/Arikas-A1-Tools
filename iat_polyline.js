@@ -21,7 +21,7 @@ function iat_polyline(division, pl_type, od_type, page) {
 
 	page = page.trim();
 	if (page != "") {
-		let instr = instruction(parseFloat(page));
+		let instr = instruction_apll(parseFloat(page));
 		if (instr == "") {
 			return "“使用说明”参数非法。";
 		}
@@ -61,9 +61,7 @@ function iat_polyline(division, pl_type, od_type, page) {
 	if (begin >= end) return "所选的两个Arc无重叠区间。";
 	
 	let points = SplitStr2Points(division.trim(), begin, end);
-	if (points == []) {
-		return "分割方式非法。";
-	}
+	if (points.length == 0) return "分割方式非法。";
 
 	let baseXEasing = ALT2EasingX(base.LineType);
 	let baseYEasing = ALT2EasingY(base.LineType);
@@ -226,7 +224,7 @@ function ALT2EasingX(type) {
 	}
 }
 
-function instruction(page) {
+function instruction_apll(page) {
 	switch (page) {
 		case 0:
 			return  "本工具用于便捷生成折线蛇。\n" + 

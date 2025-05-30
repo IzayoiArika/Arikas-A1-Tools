@@ -22,7 +22,7 @@ function iat_arcshift(xshift, yshift, oob_strategy, page) {
 	
 	page = page.trim();
 	if (page != "") {
-		let instr = instruction(parseFloat(page));
+		let instr = instruction_asft(parseFloat(page));
 		if (instr == "") {
 			return "“使用说明”参数非法。";
 		}
@@ -67,7 +67,9 @@ function iat_arcshift(xshift, yshift, oob_strategy, page) {
 		arc.TimingGroup = note.TimingGroup;
 		AddArcEvent(arc);
 		for (let ai = 0; ai < note.ArcTaps.count; ai++) {
-		    AddArcTap(arc, note.ArcTaps[ai]);
+			let at = new ArcArcTap();
+			at.Timing = note.ArcTaps[ai].Timing;
+		    AddArcTap(arc, at);
 		}
 		RemoveArcEvent(note);
 	}
@@ -127,7 +129,7 @@ function regulateCoordX(coord, strategy, y_coord) {
 	return coord;
 }
 
-function instruction(page) {
+function instruction_asft(page) {
 	switch (page) {
 		case 0:
 			return  "本工具用于移动Arc；如为黑线，则会带着Arctap一并移动。\n" + 
@@ -138,8 +140,7 @@ function instruction(page) {
 					"输入参数编号（从1开始，从上至下依次+1）并执行，可查询对应参数的详细说明。\n" + 
 					"再次查看本说明可将“使用说明”参数填为0后执行。\n\n" + 
 
-					"接收数字参数时使用IEEE 754双精度浮点数，因此传入过大的数可能导致精度丢失。\n" + 
-					"处理含Arctap的黑线时，部分Arcade会报错，但实际上是成功的。此时请点左侧栏的保存按钮保存，然后重新打开谱面即可。\n\n" + 
+					"接收数字参数时使用IEEE 754双精度浮点数，因此传入过大的数可能导致精度丢失。\n\n" + 
 
 					"本工具由IzayoiArika编写，转发时请保留本句署名。";
 		case 1:

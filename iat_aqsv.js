@@ -22,7 +22,7 @@ function iat_aqsv(base_bpm, bpl, tg, hold_strategy, page) {
 
 	page = page.trim();
 	if (page != "") {
-		let instr = instruction(parseFloat(page));
+		let instr = instruction_aqsv(parseFloat(page));
 		if (instr == "") {
 			return "“使用说明”参数非法。";
 		}
@@ -109,7 +109,7 @@ function iat_aqsv(base_bpm, bpl, tg, hold_strategy, page) {
     return res_str;
 }
 
-function instruction(page) {
+function instruction_aqsv(page) {
 	switch (page) {
 		case 0:
 			return  "本工具用于便捷生成严格可读骤停变速。\n" + 

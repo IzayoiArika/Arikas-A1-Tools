@@ -1,9 +1,9 @@
 function OnLoad()
 {
 	return {
-		"providers": ["iat_arccutter_bezier"],
+		"providers": ["iat_arcbezier_cutter"],
 		"info": {
-			"iat_arccutter_bezier": {
+			"iat_arcbezier_cutter": {
 				"name": "IATools - 切蛇工具 - 贝塞尔",
 				"params": ["X方向贝塞尔曲线参数", "Y方向贝塞尔曲线参数", "分割方式", "切割样式", "使用说明"],
 				"params_value": {
@@ -18,11 +18,11 @@ function OnLoad()
 	}
 }
 
-function iat_arccutter_bezier(x_bezier, y_bezier, division, pttrn_str, page) {
+function iat_arcbezier_cutter(x_bezier, y_bezier, division, pttrn_str, page) {
 
 	page = page.trim();
 	if (page != "") {
-		let instr = instruction(parseFloat(page));
+		let instr = instruction_acbz(parseFloat(page));
 		if (instr == "") {
 			return "“使用说明”参数非法。";
 		}
@@ -39,14 +39,14 @@ function iat_arccutter_bezier(x_bezier, y_bezier, division, pttrn_str, page) {
 	let x_bezier_arr = [];
 	if (x_bezier != "") {
 		x_bezier_arr = parseBezier(x_bezier);
-		if (x_bezier_arr == []) return "贝塞尔曲线参数非法。";
+		if (x_bezier_arr.length == 0) return "贝塞尔曲线参数非法。";
 	}
 
 	y_bezier = y_bezier.trim();
 	let y_bezier_arr = [];
 	if (y_bezier != "") {
 		y_bezier_arr = parseBezier(y_bezier);
-		if (y_bezier_arr == []) return "贝塞尔曲线参数非法。";
+		if (y_bezier_arr.length == 0) return "贝塞尔曲线参数非法。";
 	}
 
 	let notes = GetSelectedNotes();
@@ -82,9 +82,8 @@ function iat_arccutter_bezier(x_bezier, y_bezier, division, pttrn_str, page) {
 		}
 
 		let points = SplitStr2Points(division.trim(), arc_old.Timing, arc_old.EndTiming);
-		if (points == []) {
-			return "分割方式非法。";
-		}
+		if (points.length == 0) return "分割方式非法。";
+		
 		let noteLen = arc_old.EndTiming - arc_old.Timing;
 		
 		let yhsw = 0.01;
@@ -406,7 +405,7 @@ function bezierY(x, bezier_arr) {
     return y;
 }
 
-function instruction(page) {
+function instruction_acbz(page) {
 	switch (page) {
 		case 0:
 			return  "本工具用于便捷把蛇切割为数段。\n" + 
